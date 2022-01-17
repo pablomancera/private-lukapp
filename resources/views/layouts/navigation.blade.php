@@ -15,6 +15,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('fixed')" :active="request()->routeIs('fixed')">
+                        Gastos fijos
+                    </x-nav-link>
+                    <x-nav-link :href="route('variable')" :active="request()->routeIs('variable')">
+                        Gastos variables
+                    </x-nav-link>
+                    <x-nav-link :href="route('savings')" :active="request()->routeIs('savings')">
+                        Ahorros
+                    </x-nav-link>
+                    <x-nav-link :href="route('settings')" :active="request()->routeIs('settings')">
+                        Configuración
+                    </x-nav-link>
                 </div>
             </div>
 
