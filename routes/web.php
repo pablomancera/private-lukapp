@@ -21,6 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/ingresos', function () {
+    return view('ingresos');
+})->middleware(['auth'])->name('ingresos');
+
+
 Route::get('/fixed', function () {
     return view('fixed-expenses');
 })->middleware(['auth'])->name('fixed');
