@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('ingresos')" :active="request()->routeIs('ingresos')">
+                        Ingresos
+                    </x-nav-link>
                     <x-nav-link :href="route('fixed')" :active="request()->routeIs('fixed')">
                         Gastos fijos
                     </x-nav-link>
