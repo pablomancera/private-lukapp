@@ -42,4 +42,8 @@ Route::get('/settings', function () {
     return view('settings');
 })->middleware(['auth'])->name('settings');
 
+Route::get('/logout', function () {
+    return view('settings');
+})->middleware(['auth'])->name('logout');
+
 require __DIR__.'/auth.php';
