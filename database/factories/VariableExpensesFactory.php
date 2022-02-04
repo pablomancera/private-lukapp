@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FixedExpensesFactory extends Factory
+class VariableExpensesFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,7 +16,6 @@ class FixedExpensesFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'value' => $this->faker->randomNumber(7, false),
-            'day' => $this->faker->numberBetween(1, 31)
         ];
     }
 }

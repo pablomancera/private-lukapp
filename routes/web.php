@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\FixedExpensesController;
+use App\Http\Controllers\FixedIncomesController;
+use App\Http\Controllers\VariableExpensesController;
+use App\Http\Controllers\VariableIncomesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,18 +25,21 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/ingresos', function () {
-    return view('ingresos');
-})->middleware(['auth'])->name('ingresos');
+Route::get('/fixed-incomes', function () {
+    return view('fixed-incomes');
+})->middleware(['auth'])->name('fixed-incomes');
 
+Route::get('/variable-incomes', function () {
+    return view('variable-incomes');
+})->middleware(['auth'])->name('variable-incomes');
 
-Route::get('/fixed', function () {
+Route::get('/fixed-expenses', function () {
     return view('fixed-expenses');
-})->middleware(['auth'])->name('fixed');
+})->middleware(['auth'])->name('fixed-expenses');
 
-Route::get('/variable', function () {
+Route::get('/variable-expenses', function () {
     return view('variable-expenses');
-})->middleware(['auth'])->name('variable');
+})->middleware(['auth'])->name('variable-expenses');
 
 Route::get('/savings', function () {
     return view('savings');
@@ -43,6 +49,14 @@ Route::get('/settings', function () {
     return view('settings');
 })->middleware(['auth'])->name('settings');
 
-Route::resource('fixed-expenses', FixedExpensesController::class);
+Route::prefix('expenses')->group(function () {
+    Route::resource('/fixed', FixedExpensesController::class);
+    Route::resource('/variable', VariableExpensesController::class);
+});
 
-require __DIR__.'/auth.php';
+Route::prefix('incomes')->group(function () {
+    Route::resource('/fixed', FixedIncomesController::class);
+    Route::resource('/variable', VariableIncomesController::class);
+});
+
+require __DIR__ . '/auth.php';

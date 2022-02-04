@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFixedExpensesRequest;
 use App\Http\Requests\StoreFixedIncomesRequest;
-use App\Models\FixedExpenses;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateFixedIncomesRequest;
+use App\Models\FixedIncomes;
 use Illuminate\Support\Facades\Auth;
 
-class FixedExpensesController extends Controller
+class FixedIncomesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +18,7 @@ class FixedExpensesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->fixed_expenses->toJson();
+        return $user->fixed_incomes->toJson();
     }
 
     /**
@@ -35,14 +34,14 @@ class FixedExpensesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreFixedIncomesRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreFixedIncomesRequest $request)
     {
         $validated = $request->validated();
 
-        $data = new FixedExpenses;
+        $data = new FixedIncomes;
 
         $data->name = $validated['name'];
         $data->value = $validated['value'];
@@ -51,16 +50,16 @@ class FixedExpensesController extends Controller
 
         $data->save();
 
-        return view("fixed-expenses");
+        return view("fixed-incomes");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(FixedIncomes $fixedIncomes)
     {
         //
     }
@@ -68,10 +67,10 @@ class FixedExpensesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(FixedIncomes $fixedIncomes)
     {
         //
     }
@@ -79,11 +78,11 @@ class FixedExpensesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateFixedIncomesRequest  $request
+     * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateFixedIncomesRequest $request, FixedIncomes $fixedIncomes)
     {
         //
     }
@@ -91,10 +90,10 @@ class FixedExpensesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(FixedIncomes $fixedIncomes)
     {
         //
     }

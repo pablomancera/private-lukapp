@@ -20,7 +20,7 @@ function fillMoneyTable() {
     data.forEach((expense) => {
 
         let d = new Date();
-        d.setDate(d.getMonth() + expense.day);
+        d.setDate(d.getMonth() + (expense.day - 1));
     
         let dateString = type == "fixed" ? d.toDateString() : expense.created_at.toDateString();
 

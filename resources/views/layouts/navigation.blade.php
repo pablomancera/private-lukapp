@@ -15,13 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('ingresos')" :active="request()->routeIs('ingresos')">
-                        {{ __('Ingresos') }}
+                    <x-nav-link :href="route('fixed-incomes')" :active="request()->routeIs('fixed-incomes')">
+                        Ingresos fijos
                     </x-nav-link>
-                    <x-nav-link :href="route('fixed')" :active="request()->routeIs('fixed')">
+                    <x-nav-link :href="route('variable-incomes')" :active="request()->routeIs('variable-incomes')">
+                        Ingresos variables
+                    </x-nav-link>
+                    <x-nav-link :href="route('fixed-expenses')" :active="request()->routeIs('fixed-expenses')">
                         Gastos fijos
                     </x-nav-link>
-                    <x-nav-link :href="route('variable')" :active="request()->routeIs('variable')">
+                    <x-nav-link :href="route('variable-expenses')" :active="request()->routeIs('variable-expenses')">
                         Gastos variables
                     </x-nav-link>
                     <x-nav-link :href="route('savings')" :active="request()->routeIs('savings')">

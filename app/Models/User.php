@@ -45,4 +45,16 @@ class User extends Authenticatable
     public function fixed_expenses() {
         return $this->hasMany(FixedExpenses::class);
     }
+
+    public function variable_expenses() {
+        return $this->hasMany(VariableExpenses::class);
+    }
+
+    public function fixed_incomes() {
+        return $this->hasMany(FixedIncomes::class);
+    }
+
+    public function variable_incomes() {
+        return $this->hasMany(VariableIncomes::class);
+    }
 }

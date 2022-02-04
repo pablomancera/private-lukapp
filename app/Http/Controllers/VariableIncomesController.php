@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFixedExpensesRequest;
-use App\Http\Requests\StoreFixedIncomesRequest;
-use App\Models\FixedExpenses;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreVariableIncomesRequest;
+use App\Http\Requests\UpdateVariableIncomesRequest;
+use App\Models\VariableIncomes;
 use Illuminate\Support\Facades\Auth;
 
-class FixedExpensesController extends Controller
+class VariableIncomesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +18,7 @@ class FixedExpensesController extends Controller
     {
         $user = Auth::user();
 
-        return $user->fixed_expenses->toJson();
+        return $user->variable_incomes->toJson();
     }
 
     /**
@@ -35,32 +34,31 @@ class FixedExpensesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreVariableIncomesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFixedIncomesRequest $request)
+    public function store(StoreVariableIncomesRequest $request)
     {
         $validated = $request->validated();
 
-        $data = new FixedExpenses;
+        $data = new VariableIncomes;
 
         $data->name = $validated['name'];
         $data->value = $validated['value'];
-        $data->day = $validated['day'];
         $data->user_id = Auth::id();
 
         $data->save();
 
-        return view("fixed-expenses");
+        return view("variable-incomes");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(VariableIncomes $variableIncomes)
     {
         //
     }
@@ -68,10 +66,10 @@ class FixedExpensesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(VariableIncomes $variableIncomes)
     {
         //
     }
@@ -79,11 +77,11 @@ class FixedExpensesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateVariableIncomesRequest  $request
+     * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateVariableIncomesRequest $request, VariableIncomes $variableIncomes)
     {
         //
     }
@@ -91,10 +89,10 @@ class FixedExpensesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(VariableIncomes $variableIncomes)
     {
         //
     }

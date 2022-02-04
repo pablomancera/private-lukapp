@@ -4,5 +4,5 @@
             Gastos fijos
         </h2>
     </x-slot>
-    <x-money-table route="/fixed-expenses" type="fixed" color="text-red-500">Nombre del gasto</x-money-table>
+    <x-money-table route="/expenses/fixed" type="fixed" color="text-red-500">gasto</x-money-table>
 </x-app-layout>
