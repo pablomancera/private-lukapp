@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FixedExpensesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,5 +42,7 @@ Route::get('/savings', function () {
 Route::get('/settings', function () {
     return view('settings');
 })->middleware(['auth'])->name('settings');
+
+Route::resource('fixed-expenses', FixedExpensesController::class);
 
 require __DIR__.'/auth.php';

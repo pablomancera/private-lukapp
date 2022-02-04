@@ -4,4 +4,5 @@
             Gastos variables
         </h2>
     </x-slot>
+    <x-money-table>Nombre del gasto</x-money-table>
 </x-app-layout>
