@@ -2,5 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/js/lib/max-heap.js": "/js/lib/max-heap.js",
     "/js/components/money-table.js": "/js/components/money-table.js",
+    "/js/components/dashboard.js": "/js/components/dashboard.js",
     "/css/app.css": "/css/app.css"
 }

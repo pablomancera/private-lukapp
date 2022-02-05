@@ -7,7 +7,7 @@ $(function () {
     axios
         .get(route, {
             params: {
-                date: d.toUTCString()
+                date: d.toUTCString(),
             },
         })
         .then((response) => {
