@@ -16,6 +16,7 @@ class VariableExpensesFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'value' => $this->faker->randomNumber(7, false),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
         ];
     }
 }

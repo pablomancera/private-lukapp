@@ -17,6 +17,6 @@ class VariableExpensesSeeder extends Seeder
     {
         $user = User::find(1);
 
-        VariableExpenses::factory()->count(10)->for($user)->create();
+        VariableExpenses::factory()->count(100)->for($user)->create();
     }
 }

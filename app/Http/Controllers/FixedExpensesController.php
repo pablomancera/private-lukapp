@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFixedExpensesRequest;
-use App\Http\Requests\StoreFixedIncomesRequest;
 use App\Models\FixedExpenses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +37,7 @@ class FixedExpensesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFixedIncomesRequest $request)
+    public function store(StoreFixedExpensesRequest $request)
     {
         $validated = $request->validated();
 

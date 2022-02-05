@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVariableExpensesRequest;
 use App\Http\Requests\UpdateVariableExpensesRequest;
 use App\Models\VariableExpenses;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VariableExpensesController extends Controller
@@ -14,10 +15,17 @@ class VariableExpensesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $user = Auth::user();
+
+        if ($request->date) {
+            $date = strtotime($request->date);
+            return VariableExpenses::where('user_id', $user->id)
+                                        ->whereMonth('created_at', date('m', $date))
+                                        ->whereYear('created_at', date('Y', $date))
+                                        ->get();
+        }
 
         return $user->variable_expenses->toJson();
     }
@@ -96,5 +104,10 @@ class VariableExpensesController extends Controller
     public function destroy(VariableExpenses $variableExpenses)
     {
         //
+    }
+
+    public function getFromDate($date)
+    {
+        return $date;
     }
 }

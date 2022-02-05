@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVariableIncomesRequest;
 use App\Http\Requests\UpdateVariableIncomesRequest;
 use App\Models\VariableIncomes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VariableIncomesController extends Controller
@@ -14,9 +15,17 @@ class VariableIncomesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+
+        if ($request->date) {
+            $date = strtotime($request->date);
+            return VariableIncomes::where('user_id', $user->id)
+                                        ->whereMonth('created_at', date('m', $date))
+                                        ->whereYear('created_at', date('Y', $date))
+                                        ->get();
+        }
 
         return $user->variable_incomes->toJson();
     }

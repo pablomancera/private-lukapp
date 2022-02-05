@@ -17,6 +17,6 @@ class VariableIncomesSeeder extends Seeder
     {
         $user = User::find(1);
 
-        VariableIncomes::factory()->count(10)->for($user)->create();
+        VariableIncomes::factory()->count(100)->for($user)->create();
     }
 }

@@ -1,13 +1,22 @@
+const { default: axios } = require("axios");
+
 let data;
 
 $(function () {
-    axios.get(route).then((response) => {
-        data = response.data;
-        data.forEach((item) => {
-            item.created_at = new Date(Date.parse(item.created_at));
+    let d = new Date();
+    axios
+        .get(route, {
+            params: {
+                date: d.toUTCString()
+            },
+        })
+        .then((response) => {
+            data = response.data;
+            data.forEach((item) => {
+                item.created_at = new Date(Date.parse(item.created_at));
+            });
+            fillMoneyTable();
         });
-        fillMoneyTable();
-    });
 });
 
 function fillMoneyTable() {
@@ -18,11 +27,13 @@ function fillMoneyTable() {
     }
 
     data.forEach((expense) => {
-
         let d = new Date();
         d.setDate(d.getMonth() + (expense.day - 1));
-    
-        let dateString = type == "fixed" ? d.toDateString() : expense.created_at.toDateString();
+
+        let dateString =
+            type == "fixed"
+                ? d.toDateString()
+                : expense.created_at.toDateString();
 
         table.append(`
                         <tr>
@@ -37,7 +48,7 @@ function fillMoneyTable() {
                                 </div>
                             </td>
                             <td class="p-2 whitespace-nowrap">
-                                <div class="text-left">${ dateString }</div>
+                                <div class="text-left">${dateString}</div>
                             </td>
                         </tr>
                         `);
