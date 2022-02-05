@@ -53,17 +53,17 @@ function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedec
 
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
-function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 
-function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 
 
@@ -84,7 +84,7 @@ var _siftUp = /*#__PURE__*/new WeakSet();
 var _siftDown = /*#__PURE__*/new WeakSet();
 
 var MaxHeap = /*#__PURE__*/function () {
-  function MaxHeap() {
+  function MaxHeap(arr) {
     _classCallCheck(this, MaxHeap);
 
     _classPrivateMethodInitSpec(this, _siftDown);
@@ -108,6 +108,16 @@ var MaxHeap = /*#__PURE__*/function () {
       writable: true,
       value: []
     });
+
+    if (!arr) {
+      return;
+    }
+
+    _classPrivateFieldSet(this, _data, arr);
+
+    for (var i = Math.floor(arr.length / 2); i > 0; i--) {
+      _classPrivateMethodGet(this, _siftDown, _siftDown2).call(this, i);
+    }
   }
 
   _createClass(MaxHeap, [{
@@ -159,7 +169,7 @@ function _parent2(i) {
   }
 
   i++;
-  return _classPrivateFieldGet(this, _data)[i / 2 - 1];
+  return _classPrivateFieldGet(this, _data)[Math.floor(i / 2 - 1)];
 }
 
 function _leftChild2(i) {
@@ -185,7 +195,7 @@ function _rightChild2(i) {
 function _swap2(a, b) {
   var tmpObj = a;
   a = b;
-  b = a;
+  b = tmpObj;
 }
 
 function _siftUp2(i) {
@@ -214,7 +224,7 @@ function _siftDown2(i) {
 
   if (right && right > max) {
     max = right;
-    next = 2 * (i + 1) - 1;
+    next = 2 * (i + 1);
   }
 
   if (_classPrivateFieldGet(this, _data)[i] != max) {
