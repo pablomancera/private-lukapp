@@ -2303,7 +2303,8 @@ $(function () {
   var d = new Date();
   var greeting = d.getHours > 12 ? "¡Buenos días " : "¡Buenas tardes ";
   greeting += user + "!";
-  $("#greeting").text(greeting);
+  document.getElementById("dashboard-greeting").textContent = greeting;
+  document.getElementById("dashboard-balance").textContent = "".concat(new Intl.NumberFormat().format(goal), "$");
   axios.get("/expenses/variable", {
     params: {
       date: d.toUTCString()
@@ -2330,6 +2331,11 @@ $(function () {
 function dashboardInit() {
   var totalExpenses = 0;
   var totalIncomes = 0;
+  var balance = 0;
+  var percentage = 0;
+  var remaining = 0;
+  var progressBar = document.getElementById("balance-progress");
+  var remainingSpan = document.getElementById("dashboard-remaining");
   fExpenses.forEach(function (expense) {
     totalExpenses += expense.value;
   });
@@ -2342,7 +2348,16 @@ function dashboardInit() {
   vIncomes.forEach(function (income) {
     totalIncomes += income.value;
   });
-  console.log(totalIncomes - totalExpenses);
+  balance = totalIncomes - totalExpenses;
+  percentage = balance * 100 / goal;
+  remaining = goal - balance;
+  progressBar.setAttribute("aria-valuenow", balance);
+  progressBar.setAttribute("aria-valuemax", goal);
+  progressBar.style.width = "".concat(percentage, "%");
+  progressBar.textContent = "".concat(Math.round(percentage), "%");
+  remainingSpan.textContent = "".concat(new Intl.NumberFormat().format(remaining), "$");
+  remainingSpan.classList.add(balance > 0 ? "text-green-500" : "text-red-500");
+  remainingSpan.parentElement.classList.remove("opacity-0");
 }
 })();
 

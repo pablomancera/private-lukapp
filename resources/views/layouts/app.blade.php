@@ -51,6 +51,11 @@
             </div>
         </div>
     </div>
+    @empty (Auth::user()->settings->goal)
+    <x-bottom-notification>
+        <p class="my-0">Aún no has creado una meta de ahorro. Créala <a href="/settings">acá.</a></p>
+    </x-bottom-notification>
+    @endempty
 </body>
 
 </html>

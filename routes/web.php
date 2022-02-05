@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FixedExpensesController;
 use App\Http\Controllers\FixedIncomesController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\VariableExpensesController;
 use App\Http\Controllers\VariableIncomesController;
 use Illuminate\Support\Facades\Route;
@@ -58,5 +59,7 @@ Route::prefix('incomes')->group(function () {
     Route::resource('/fixed', FixedIncomesController::class);
     Route::resource('/variable', VariableIncomesController::class);
 });
+
+Route::resource('app-settings', SettingsController::class);
 
 require __DIR__ . '/auth.php';

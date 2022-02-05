@@ -57,4 +57,8 @@ class User extends Authenticatable
     public function variable_incomes() {
         return $this->hasMany(VariableIncomes::class);
     }
+    
+    public function settings() {
+        return $this->hasOne(Settings::class);
+    }
 }
