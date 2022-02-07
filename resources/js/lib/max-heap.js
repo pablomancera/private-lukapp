@@ -1,14 +1,17 @@
-class MaxHeap {
+window.MaxHeap = class MaxHeap {
     #size = 0;
     #data = [];
+    #value;
 
-    constructor(arr) {
-        if (!arr) {
+    constructor(arr, fun) {
+        if (!arr || !fun) {
             return;
         }
 
+        this.#value = fun;
         this.#data = arr;
-        for (let i = Math.floor(arr.length / 2); i > 0; i--) {
+        this.#size = arr.length;
+        for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
             this.#siftDown(i);
         }
     }
@@ -35,6 +38,13 @@ class MaxHeap {
         this.#swap(0, this.#size);
         this.#siftDown(0);
         return result;
+    }
+
+    peek() {
+        if (this.#size < 1) {
+            return null;
+        }
+        return this.#data[0];
     }
 
     #parent(i) {
@@ -85,7 +95,7 @@ class MaxHeap {
         let parent = this.#data[p];
         let max = this.#data[i];
 
-        while (i > 0 && parent < max) {
+        while (i > 0 && this.#value(parent) < this.#value(max)) {
             this.#swap(p, i);
             i = p;
             p = this.#parent(i);
@@ -97,12 +107,12 @@ class MaxHeap {
         let max = i;
 
         let left = this.#leftChild(i);
-        if (left < this.#size && this.#data[left] > this.#data[max]) {
+        if (left < this.#size && this.#value(this.#data[left]) > this.#value(this.#data[max])) {
             max = left;
         }
 
         let right = this.#rightChild(i);
-        if (right < this.#size && this.#data[right] > this.#data[max]) {
+        if (right < this.#size && this.#value(this.#data[right]) > this.#value(this.#data[max])) {
             max = right;
         }
 

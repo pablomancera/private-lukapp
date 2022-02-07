@@ -16,6 +16,6 @@ mix.js("resources/js/app.js", "public/js").postCss(
     "public/css",
     [require("postcss-import"), require("tailwindcss"), require("autoprefixer")]
 );
-mix.js("resources/js/lib/max-heap.js", "public/js/lib");
+// mix.js("resources/js/lib/max-heap.js", "public/js/lib");
 mix.js("resources/js/components/money-table.js", "public/js/components");
 mix.js("resources/js/components/dashboard.js", "public/js/components");

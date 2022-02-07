@@ -1,9 +1,23 @@
 <x-search-bar></x-search-bar>
+<script src="/js/lib/max-heap.js"></script>
 <script src="/js/components/money-table.js"></script>
 <script>
     const type = "{{ $type }}";
     const route = "{{ $route }}";
     const color = "{{ $color }}";
+    const value = {
+        name: (obj) => {
+            return obj.name
+        },
+        value: (obj) => {
+            return obj.value
+        },
+        date: type == "variable" ? (obj) => {
+            return obj.created_at
+        } : (obj) => {
+            return obj.day
+        }
+    }
 </script>
 
 <div class="flex flex-col justify-center my-10">
@@ -15,13 +29,13 @@
                     <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                         <tr>
                             <th class="p-2 whitespace-nowrap">
-                                <div class="font-semibold text-left">Nombre del {{ $slot }}</div>
+                                <div><button id="money-table-name" class="money-table-col font-semibold text-left text-base">Nombre del {{ $slot }}</button></div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
-                                <div class="font-semibold text-left">Valor</div>
+                                <div><button id="money-table-value" class="money-table-col font-semibold text-left text-base">Valor</button></div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
-                                <div class="font-semibold text-left">{{ $type == "fixed" ? "Próximo pago" : "fecha" }}</div>
+                                <div><button id="money-table-date" class="money-table-col font-semibold text-left text-base">{{ $type == "fixed" ? "Próximo pago" : "fecha" }}</button></div>
                             </th>
                         </tr>
                     </thead>

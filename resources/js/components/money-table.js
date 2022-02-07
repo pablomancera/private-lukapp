@@ -15,18 +15,50 @@ $(function () {
             data.forEach((item) => {
                 item.created_at = new Date(Date.parse(item.created_at));
             });
-            fillMoneyTable();
+            fillMoneyTable(value.date, 0);
         });
+
+    const cols = document.querySelectorAll(".money-table-col");
+
+    cols.forEach((el) => {
+        el.addEventListener("click", (e) => {
+            sortTable(e.target.id);
+        });
+    });
 });
 
-function fillMoneyTable() {
+let lastSelectedCol;
+function sortTable(id) {
+    let rows = document.querySelectorAll("table tbody tr");
+
+    let order = lastSelectedCol == id ? 1 : 0;
+
+    rows.forEach((el) => {
+        el.remove();
+    });
+
+    if (id == "money-table-name") {
+        fillMoneyTable(value.name, order);
+    } else if (id == "money-table-value") {
+        fillMoneyTable(value.value, order);
+    } else if (id == "money-table-date") {
+        fillMoneyTable(value.date, order);
+    }
+
+    lastSelectedCol = order ? "" : id;
+}
+
+function fillMoneyTable(fun, order) {
     let table = $("#money-table");
 
     if (!table || !data) {
         return;
     }
 
-    data.forEach((expense) => {
+    let m = new MaxHeap(data, fun);
+
+    while (m.peek()) {
+        let expense = m.extractMax();
         let d = new Date();
         d.setDate(d.getMonth() + (expense.day - 1));
 
@@ -35,22 +67,24 @@ function fillMoneyTable() {
                 ? d.toDateString()
                 : expense.created_at.toDateString();
 
-        table.append(`
-                        <tr>
-                            <td class="p-2 whitespace-nowrap">
-                                <div class="text-left">${expense.name}</div>
-                            </td>
-                            <td class="p-2 whitespace-nowrap">
-                                <div class="text-left font-medium ${color} ">
-                                    $${new Intl.NumberFormat().format(
-                                        expense.value
-                                    )}
-                                </div>
-                            </td>
-                            <td class="p-2 whitespace-nowrap">
-                                <div class="text-left">${dateString}</div>
-                            </td>
-                        </tr>
-                        `);
-    });
+        let code = `<tr>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="text-left">${expense.name}</div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="text-left font-medium ${color} ">
+                                $${new Intl.NumberFormat().format(
+                                    expense.value
+                                )}
+                            </div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="text-left">${dateString}</div>
+                        </td>
+                    </tr>`;
+
+        order
+            ? table.children("tbody").append(code)
+            : table.children("tbody").prepend(code);
+    }
 }

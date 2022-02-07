@@ -2307,23 +2307,52 @@ $(function () {
     data.forEach(function (item) {
       item.created_at = new Date(Date.parse(item.created_at));
     });
-    fillMoneyTable();
+    fillMoneyTable(value.date, 0);
+  });
+  var cols = document.querySelectorAll(".money-table-col");
+  cols.forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      sortTable(e.target.id);
+    });
   });
 });
+var lastSelectedCol;
 
-function fillMoneyTable() {
+function sortTable(id) {
+  var rows = document.querySelectorAll("table tbody tr");
+  var order = lastSelectedCol == id ? 1 : 0;
+  rows.forEach(function (el) {
+    el.remove();
+  });
+
+  if (id == "money-table-name") {
+    fillMoneyTable(value.name, order);
+  } else if (id == "money-table-value") {
+    fillMoneyTable(value.value, order);
+  } else if (id == "money-table-date") {
+    fillMoneyTable(value.date, order);
+  }
+
+  lastSelectedCol = order ? "" : id;
+}
+
+function fillMoneyTable(fun, order) {
   var table = $("#money-table");
 
   if (!table || !data) {
     return;
   }
 
-  data.forEach(function (expense) {
+  var m = new MaxHeap(data, fun);
+
+  while (m.peek()) {
+    var expense = m.extractMax();
     var d = new Date();
     d.setDate(d.getMonth() + (expense.day - 1));
     var dateString = type == "fixed" ? d.toDateString() : expense.created_at.toDateString();
-    table.append("\n                        <tr>\n                            <td class=\"p-2 whitespace-nowrap\">\n                                <div class=\"text-left\">".concat(expense.name, "</div>\n                            </td>\n                            <td class=\"p-2 whitespace-nowrap\">\n                                <div class=\"text-left font-medium ").concat(color, " \">\n                                    $").concat(new Intl.NumberFormat().format(expense.value), "\n                                </div>\n                            </td>\n                            <td class=\"p-2 whitespace-nowrap\">\n                                <div class=\"text-left\">").concat(dateString, "</div>\n                            </td>\n                        </tr>\n                        "));
-  });
+    var code = "<tr>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">".concat(expense.name, "</div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left font-medium ").concat(color, " \">\n                                $").concat(new Intl.NumberFormat().format(expense.value), "\n                            </div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">").concat(dateString, "</div>\n                        </td>\n                    </tr>");
+    order ? table.children("tbody").append(code) : table.children("tbody").prepend(code);
+  }
 }
 })();
 
