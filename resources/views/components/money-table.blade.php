@@ -35,7 +35,7 @@
                                 <div><button id="money-table-value" class="money-table-col font-semibold text-left text-base">Valor</button></div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
-                                <div><button id="money-table-date" class="money-table-col font-semibold text-left text-base">{{ $type == "fixed" ? "Próximo pago" : "fecha" }}</button></div>
+                                <div><button id="money-table-date" class="money-table-col font-semibold text-left text-base">{{ $type == "fixed" ? "Próximo pago" : "Fecha" }}</button></div>
                             </th>
                         </tr>
                     </thead>
