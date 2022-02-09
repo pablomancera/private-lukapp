@@ -2295,22 +2295,11 @@ var __webpack_exports__ = {};
 var _require = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"),
     axios = _require["default"];
 
-var data;
-var ogData;
+var data = [];
+var ogData = [];
 $(function () {
-  var d = new Date();
-  axios.get(route, {
-    params: {
-      date: d.toUTCString()
-    }
-  }).then(function (response) {
-    ogData = response.data;
-    ogData.forEach(function (item) {
-      item.created_at = new Date(Date.parse(item.created_at));
-    });
-    data = JSON.parse(JSON.stringify(ogData));
-    fillMoneyTable(value.date, 0);
-  });
+  var date = new Date();
+  getData(date);
   var cols = document.querySelectorAll(".money-table-col");
   cols.forEach(function (el) {
     el.addEventListener("click", function (e) {
@@ -2322,6 +2311,22 @@ $(function () {
     searchName(e.target);
   });
 });
+
+window.getData = function getData(date) {
+  axios.get(route, {
+    params: {
+      date: date.toUTCString()
+    }
+  }).then(function (response) {
+    ogData.length = 0;
+    ogData = response.data;
+    ogData.forEach(function (item) {
+      item.created_at = new Date(Date.parse(item.created_at));
+    });
+    data = JSON.parse(JSON.stringify(ogData));
+    fillMoneyTable(value.date, 0);
+  });
+};
 
 function searchName(target) {
   if (!target.value) {

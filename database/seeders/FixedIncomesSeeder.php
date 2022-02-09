@@ -17,6 +17,6 @@ class FixedIncomesSeeder extends Seeder
     {
         $user = User::find(1);
 
-        FixedIncomes::factory()->count(10)->for($user)->create();
+        FixedIncomes::factory()->count(50)->for($user)->create();
     }
 }

@@ -14,7 +14,7 @@ class VariableExpensesFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->sentence(3),
             'value' => $this->faker->randomNumber(7, false),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
         ];

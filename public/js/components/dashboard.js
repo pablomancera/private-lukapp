@@ -2349,15 +2349,23 @@ function dashboardInit() {
     totalIncomes += income.value;
   });
   balance = totalIncomes - totalExpenses;
-  percentage = balance * 100 / goal;
+  percentage = balance * 100 / goal > 100 ? 100 : balance * 100 / goal;
   remaining = goal - balance;
   progressBar.setAttribute("aria-valuenow", balance);
   progressBar.setAttribute("aria-valuemax", goal);
   progressBar.style.width = "".concat(percentage, "%");
   progressBar.textContent = "".concat(Math.round(percentage), "%");
-  remainingSpan.textContent = "".concat(new Intl.NumberFormat().format(remaining), "$");
-  remainingSpan.classList.add(balance > 0 ? "text-green-500" : "text-red-500");
-  remainingSpan.parentElement.classList.remove("opacity-0");
+
+  if (percentage == 100) {
+    remainingSpan.parentNode.textContent = "¡Felicidades, has completado tu meta de ahorro mensual!";
+    remainingSpan = document.getElementById("dashboard-remaining-p");
+    remainingSpan.classList.add("text-green-500");
+    remainingSpan.classList.remove("opacity-0");
+  } else {
+    remainingSpan.textContent = "".concat(new Intl.NumberFormat().format(remaining), "$");
+    remainingSpan.classList.add(balance > 0 ? "text-green-500" : "text-red-500");
+    remainingSpan.parentElement.classList.remove("opacity-0");
+  }
 }
 })();
 

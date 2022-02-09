@@ -1,24 +1,12 @@
 const { default: axios } = require("axios");
 
-let data;
-let ogData;
+let data = [];
+let ogData = [];
 
 $(function () {
-    let d = new Date();
-    axios
-        .get(route, {
-            params: {
-                date: d.toUTCString(),
-            },
-        })
-        .then((response) => {
-            ogData = response.data;
-            ogData.forEach((item) => {
-                item.created_at = new Date(Date.parse(item.created_at));
-            });
-            data = JSON.parse(JSON.stringify(ogData));
-            fillMoneyTable(value.date, 0);
-        });
+    let date = new Date();
+
+    getData(date);
 
     const cols = document.querySelectorAll(".money-table-col");
 
@@ -33,6 +21,24 @@ $(function () {
         searchName(e.target);
     });
 });
+
+window.getData = function getData(date) {
+    axios
+        .get(route, {
+            params: {
+                date: date.toUTCString(),
+            },
+        })
+        .then((response) => {
+            ogData.length = 0;
+            ogData = response.data;
+            ogData.forEach((item) => {
+                item.created_at = new Date(Date.parse(item.created_at));
+            });
+            data = JSON.parse(JSON.stringify(ogData));
+            fillMoneyTable(value.date, 0);
+        });
+}
 
 function searchName(target) {
     if (!target.value) {

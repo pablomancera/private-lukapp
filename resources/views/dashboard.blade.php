@@ -21,7 +21,7 @@
                 </div>
                 <h6 class="float-left">0$</h6>
                 <h6 id="dashboard-balance" class="float-right"></h6>
-                <p class="opacity-0 transition-opacity delay-500 my-6">¡Estás a <span id="dashboard-remaining" class=""></span> de completar tu meta mensual!</p>
+                <p id="dashboard-remaining-p" class="opacity-0 transition-opacity delay-500 my-6">¡Estás a <span id="dashboard-remaining" class=""></span> de completar tu meta mensual!</p>
             </div>
         </div>
     </div>

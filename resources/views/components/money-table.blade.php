@@ -23,6 +23,9 @@
 </script>
 
 <div class="flex flex-col justify-center my-10">
+    @if ($type == "variable")
+    <x-money-table-arrows></x-money-table-arrows>
+    @endif
     <!-- Table -->
     <div class="lg:w-2/3 w-5/6 mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
         <div class="p-3">
