@@ -27,9 +27,9 @@
                     <x-nav-link :href="route('variable-expenses')" :active="request()->routeIs('variable-expenses')">
                         Gastos variables
                     </x-nav-link>
-                    <x-nav-link :href="route('savings')" :active="request()->routeIs('savings')">
+                    <!-- <x-nav-link :href="route('savings')" :active="request()->routeIs('savings')">
                         Ahorros
-                    </x-nav-link>
+                    </x-nav-link> -->
                     <x-nav-link :href="route('settings')" :active="request()->routeIs('settings')">
                         Configuración
                     </x-nav-link>

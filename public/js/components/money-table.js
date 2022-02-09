@@ -2296,6 +2296,7 @@ var _require = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
     axios = _require["default"];
 
 var data;
+var ogData;
 $(function () {
   var d = new Date();
   axios.get(route, {
@@ -2303,10 +2304,11 @@ $(function () {
       date: d.toUTCString()
     }
   }).then(function (response) {
-    data = response.data;
-    data.forEach(function (item) {
+    ogData = response.data;
+    ogData.forEach(function (item) {
       item.created_at = new Date(Date.parse(item.created_at));
     });
+    data = JSON.parse(JSON.stringify(ogData));
     fillMoneyTable(value.date, 0);
   });
   var cols = document.querySelectorAll(".money-table-col");
@@ -2316,18 +2318,33 @@ $(function () {
     });
   });
   var search = document.getElementById("money-table-search");
-  search.addEventListener('change', function (e) {
-    console.log(e.target.value);
+  search.addEventListener("keyup", function (e) {
+    searchName(e.target);
   });
 });
+
+function searchName(target) {
+  if (!target.value) {
+    data = JSON.parse(JSON.stringify(ogData));
+    fillMoneyTable(value.date, 0);
+    return;
+  }
+
+  data.length = 0;
+  ogData.forEach(function (el) {
+    var list = rabinKarp(el.name, target.value);
+
+    if (!list.isEmpty()) {
+      data.push(el);
+    }
+  });
+  fillMoneyTable(value.name, 0);
+}
+
 var lastSelectedCol;
 
 function sortTable(id) {
-  var rows = document.querySelectorAll("table tbody tr");
   var order = lastSelectedCol == id ? 1 : 0;
-  rows.forEach(function (el) {
-    el.remove();
-  });
 
   if (id == "money-table-name") {
     fillMoneyTable(value.name, order);
@@ -2342,6 +2359,10 @@ function sortTable(id) {
 
 function fillMoneyTable(fun, order) {
   var table = $("#money-table");
+  var rows = document.querySelectorAll("table tbody tr");
+  rows.forEach(function (el) {
+    el.remove();
+  });
 
   if (!table || !data) {
     return;
@@ -2352,7 +2373,17 @@ function fillMoneyTable(fun, order) {
   while (m.peek()) {
     var expense = m.extractMax();
     var d = new Date();
+    var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0);
     d.setDate(d.getMonth() + (expense.day - 1));
+
+    if (d > lastDay) {
+      d = lastDay;
+    }
+
+    if (!expense.created_at.toDateString) {
+      expense.created_at = new Date(Date.parse(expense.created_at));
+    }
+
     var dateString = type == "fixed" ? d.toDateString() : expense.created_at.toDateString();
     var code = "<tr>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">".concat(expense.name, "</div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left font-medium ").concat(color, " \">\n                                $").concat(new Intl.NumberFormat().format(expense.value), "\n                            </div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">").concat(dateString, "</div>\n                        </td>\n                    </tr>");
     order ? table.children("tbody").append(code) : table.children("tbody").prepend(code);

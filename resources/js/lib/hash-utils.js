@@ -52,7 +52,6 @@ window.rabinKarp = function rabinKarp(T, P) {
         }
         if (areEqual(t, P)) {
             result.pushBack(i);
-            console.log(t);
         }
     }
     return result;
