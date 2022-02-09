@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVariableExpensesRequest;
 use App\Http\Requests\UpdateVariableExpensesRequest;
+use App\Models\User;
 use App\Models\VariableExpenses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,10 +68,13 @@ class VariableExpensesController extends Controller
      * @param  \App\Models\VariableExpenses  $variableExpenses
      * @return \Illuminate\Http\Response
      */
-    public function show(VariableExpenses $variableExpenses)
+    public function show($id)
     {
-        //
+        $user = User::find(Auth::id());
+
+        return $user->variable_expenses->where('id', $id)->first();
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -90,9 +94,20 @@ class VariableExpensesController extends Controller
      * @param  \App\Models\VariableExpenses  $variableExpenses
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVariableExpensesRequest $request, VariableExpenses $variableExpenses)
+    public function update(Request $request, $id)
     {
-        //
+        $data = VariableExpenses::find($id);
+
+        if (isset($request->name)) {
+            $data->name = $request->name;
+        }
+        if (isset($data->value)) {
+            $data->value = $request->value;
+        }
+
+        $data->save();
+
+        return view("variable-expenses");
     }
 
     /**
@@ -101,13 +116,12 @@ class VariableExpensesController extends Controller
      * @param  \App\Models\VariableExpenses  $variableExpenses
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VariableExpenses $variableExpenses)
+    public function destroy($id)
     {
-        //
-    }
+        $data = VariableExpenses::find($id); 
+        
+        $data->delete();
 
-    public function getFromDate($date)
-    {
-        return $date;
+        return view("variable-expenses");
     }
 }

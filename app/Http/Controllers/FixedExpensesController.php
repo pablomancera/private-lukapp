@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFixedExpensesRequest;
 use App\Models\FixedExpenses;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,7 +62,9 @@ class FixedExpensesController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find(Auth::id());
+
+        return $user->fixed_expenses->where('id', $id)->first();
     }
 
     /**
@@ -84,7 +87,21 @@ class FixedExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = FixedExpenses::find($id);
+
+        if (isset($request->name)) {
+            $data->name = $request->name;
+        }
+        if (isset($data->value)) {
+            $data->value = $request->value;
+        }
+        if (isset($data->day)) {
+            $data->day = $request->day;
+        }
+
+        $data->save();
+
+        return view("fixed-expenses");
     }
 
     /**
@@ -95,6 +112,10 @@ class FixedExpensesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = FixedExpenses::find($id); 
+        
+        $data->delete();
+
+        return view("fixed-expenses");
     }
 }

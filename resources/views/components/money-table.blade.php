@@ -39,6 +39,9 @@
                             <th class="p-2 whitespace-nowrap">
                                 <div><button id="money-table-date" class="money-table-col font-semibold text-left text-base">{{ $type == "fixed" ? "Próximo pago" : "Fecha" }}</button></div>
                             </th>
+                            <th class="p-2 whitespace-nowrap">
+                                <div><button id="money-table-action" class="money-table-col font-semibold text-left text-base">Acciones</button></div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="text-sm divide-y divide-gray-100">
@@ -49,3 +52,5 @@
     </div>
 </div>
 <x-money-table-modal :type="$type" :route="$route">{{ $slot }}</x-money-table-modal>
+<x-money-table-modal-update :type="$type" :route="$route">{{ $slot }}</x-money-table-modal-update>
+<x-money-table-modal-delete></x-money-table-modal-delete>

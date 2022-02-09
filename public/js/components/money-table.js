@@ -2385,10 +2385,33 @@ function fillMoneyTable(fun, order) {
     }
 
     var dateString = type == "fixed" ? d.toDateString() : expense.created_at.toDateString();
-    var code = "<tr>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">".concat(expense.name, "</div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left font-medium ").concat(color, " \">\n                                $").concat(new Intl.NumberFormat().format(expense.value), "\n                            </div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">").concat(dateString, "</div>\n                        </td>\n                    </tr>");
+    var code = "<tr>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">".concat(expense.name, "</div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left font-medium ").concat(color, " \">\n                                $").concat(new Intl.NumberFormat().format(expense.value), "\n                            </div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">").concat(dateString, "</div>\n                        </td>\n                        <td class=\"p-2 whitespace-nowrap\">\n                            <div class=\"text-left\">\n                                <button class=\"p-2 rounded bg-blue-500 text-white\" data-bs-toggle=\"modal\" onclick=\"fillEditModal(").concat(expense.id, ")\" data-bs-target=\"#moneyUpdateModal\">Editar</button>\n                                <button class=\"p-2 rounded bg-red-500 text-white\" data-bs-toggle=\"modal\" onclick=\"confirmDelete(").concat(expense.id, ")\" data-bs-target=\"#moneyDeleteModal\">Eliminar</button>\n                            </div>\n                        </td>\n                    </tr>");
     order ? table.children("tbody").append(code) : table.children("tbody").prepend(code);
   }
 }
+
+window.fillEditModal = function fillEditModal(id) {
+  axios.get("".concat(route, "/").concat(id)).then(function (response) {
+    console.log(response.data);
+    var name = document.getElementById("update-name");
+    var value = document.getElementById("update-value");
+    var day = type == "fixed" ? document.getElementById("update-day") : null;
+    var form = document.getElementById("update-form");
+    name.value = response.data.name;
+    value.value = response.data.value;
+
+    if (day) {
+      day.value = response.data.day;
+    }
+
+    form.action = "".concat(route, "/").concat(id);
+  });
+};
+
+window.confirmDelete = function confirmDelete(id) {
+  var form = document.getElementById("delete-form");
+  form.action = "".concat(route, "/").concat(id);
+};
 })();
 
 /******/ })()

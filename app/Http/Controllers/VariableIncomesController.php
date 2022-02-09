@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVariableIncomesRequest;
 use App\Http\Requests\UpdateVariableIncomesRequest;
+use App\Models\User;
 use App\Models\VariableIncomes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,9 +68,11 @@ class VariableIncomesController extends Controller
      * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function show(VariableIncomes $variableIncomes)
+    public function show($id)
     {
-        //
+        $user = User::find(Auth::id());
+
+        return $user->variable_incomes->where('id', $id)->first();
     }
 
     /**
@@ -90,9 +93,20 @@ class VariableIncomesController extends Controller
      * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVariableIncomesRequest $request, VariableIncomes $variableIncomes)
+    public function update(Request $request, $id)
     {
-        //
+        $data = VariableIncomes::find($id);
+
+        if (isset($request->name)) {
+            $data->name = $request->name;
+        }
+        if (isset($data->value)) {
+            $data->value = $request->value;
+        }
+
+        $data->save();
+
+        return view("variable-incomes");
     }
 
     /**
@@ -101,8 +115,12 @@ class VariableIncomesController extends Controller
      * @param  \App\Models\VariableIncomes  $variableIncomes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VariableIncomes $variableIncomes)
+    public function destroy($id)
     {
-        //
+        $data = VariableIncomes::find($id); 
+        
+        $data->delete();
+
+        return view("variable-incomes");
     }
 }

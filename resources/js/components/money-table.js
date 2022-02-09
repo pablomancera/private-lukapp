@@ -87,7 +87,7 @@ function fillMoneyTable(fun, order) {
         let d = new Date();
         let lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0);
         d.setDate(d.getMonth() + (expense.day - 1));
-        
+
         if (d > lastDay) {
             d = lastDay;
         }
@@ -115,6 +115,16 @@ function fillMoneyTable(fun, order) {
                         <td class="p-2 whitespace-nowrap">
                             <div class="text-left">${dateString}</div>
                         </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="text-left">
+                                <button class="p-2 rounded bg-blue-500 text-white" data-bs-toggle="modal" onclick="fillEditModal(${
+                                    expense.id
+                                })" data-bs-target="#moneyUpdateModal">Editar</button>
+                                <button class="p-2 rounded bg-red-500 text-white" data-bs-toggle="modal" onclick="confirmDelete(${
+                                    expense.id
+                                })" data-bs-target="#moneyDeleteModal">Eliminar</button>
+                            </div>
+                        </td>
                     </tr>`;
 
         order
@@ -122,3 +132,28 @@ function fillMoneyTable(fun, order) {
             : table.children("tbody").prepend(code);
     }
 }
+
+window.fillEditModal = function fillEditModal(id) {
+    axios.get(`${route}/${id}`).then((response) => {
+        console.log(response.data);
+        let name = document.getElementById("update-name");
+        let value = document.getElementById("update-value");
+        let day =
+            type == "fixed" ? document.getElementById("update-day") : null;
+
+        let form = document.getElementById("update-form");
+
+        name.value = response.data.name;
+        value.value = response.data.value;
+        if (day) {
+            day.value = response.data.day;
+        }
+        form.action = `${route}/${id}`;
+    });
+};
+
+window.confirmDelete = function confirmDelete(id) {
+    let form = document.getElementById("delete-form");
+
+    form.action = `${route}/${id}`;
+};

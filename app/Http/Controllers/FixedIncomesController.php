@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFixedIncomesRequest;
 use App\Http\Requests\UpdateFixedIncomesRequest;
 use App\Models\FixedIncomes;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FixedIncomesController extends Controller
@@ -59,10 +61,13 @@ class FixedIncomesController extends Controller
      * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function show(FixedIncomes $fixedIncomes)
+    public function show($id)
     {
-        //
+        $user = User::find(Auth::id());
+
+        return $user->fixed_incomes->where('id', $id)->first();
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -82,9 +87,23 @@ class FixedIncomesController extends Controller
      * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFixedIncomesRequest $request, FixedIncomes $fixedIncomes)
+    public function update(Request $request, $id)
     {
-        //
+        $data = FixedIncomes::find($id);
+
+        if (isset($request->name)) {
+            $data->name = $request->name;
+        }
+        if (isset($data->value)) {
+            $data->value = $request->value;
+        }
+        if (isset($data->day)) {
+            $data->day = $request->day;
+        }
+
+        $data->save();
+
+        return view("fixed-incomes");
     }
 
     /**
@@ -93,8 +112,12 @@ class FixedIncomesController extends Controller
      * @param  \App\Models\FixedIncomes  $fixedIncomes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FixedIncomes $fixedIncomes)
+    public function destroy($id)
     {
-        //
+        $data = FixedIncomes::find($id); 
+        
+        $data->delete();
+
+        return view("fixed-incomes");
     }
 }
