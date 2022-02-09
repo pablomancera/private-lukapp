@@ -2315,6 +2315,10 @@ $(function () {
       sortTable(e.target.id);
     });
   });
+  var search = document.getElementById("money-table-search");
+  search.addEventListener('change', function (e) {
+    console.log(e.target.value);
+  });
 });
 var lastSelectedCol;
 

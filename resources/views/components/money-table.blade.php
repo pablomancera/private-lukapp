@@ -1,5 +1,7 @@
 <x-search-bar></x-search-bar>
 <script src="/js/lib/max-heap.js"></script>
+<script src="/js/lib/linked-list.js"></script>
+<script src="/js/lib/hash-utils.js"></script>
 <script src="/js/components/money-table.js"></script>
 <script>
     const type = "{{ $type }}";
